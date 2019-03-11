@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>NERDo GAWD || Homepage</title>
+        <link rel="stylesheet" href="NERDGAWD1.css"media="screen and (min-width:1024px)"/>
+        <link rel="stylesheet" href="NERDGAWD1.css"media="screen and (min-width:80px)"/>
+         <meta charset="utf-8">
+</head>
+<body>
+<div id="wrapper">
+        <header>
+                        <div class = menu>
+                        <ul>
+
+                        <div class = logo>Nerd Gawds</div>
+
+                                <li><a href=#>Movie List</a></li>
+                                <li><a href=#>Comic List</a></li>
+                                <li><a href="http://theanimeplace.co/">Anime List</a></li>
+                                <li><a href=#>Manga List</a></li>
+                                <li><a href=#>TV Show List</a></li>
+                        </ul>
+                        </div>
+        </header>
+        </br>
+        <nav>
+                <div class = navs>
+                        <ul>
+                                <div class = alogo>Anime</div>
+
+                                <li><a href=#>Bleach</a></li>
+                                <li><a href=#>One Piece</a></li>
+                                <li><a href=#>Death Note</a></li>
+                                <li><a href=#>Naruto</a></li>
+                                <li><a href=#>Fairy Tail</a></li>
+                        </ul>
+                        </br>
+                        <ul>
+                                <div class = alogo>Viewing</div>
+
+                                <li><a href=#>Anime</a></li>
+                                <li><a href=#>Comics</a></li>
+                                <li><a href=#>Manga</a></li>
+                                <li><a href=#>Movies</a></li>
+                                <li><a href=#>TV Shows</a></li>
+                        </ul>
+                        </br>
+                        <ul>
+                                <div class = alogo>Characters</div>
+
+                                <li><a href=#>Ichigo kurosaki</a></li>
+                                <li><a href=#>Naruto Uzamaki</a></li>
+                                <li><a href=#>Kakarote</a></li>
+                                <li><a href="http://fairytail.wikia.com/wiki/Natsu_Dragneel">Natsu Dragneel</a></li>
+                                <li><a href=#>Monkey D. Luffy</a></li>
+                        </ul>
+                </div>
+        </nav>
+                <div class = "mains">
+
+
+<?php
+error_reporting(E_ALL);
+
+ini_set('display_errors', 1);
+
+require_once 'ytlogin.php';
+$conn = new mysqli($hn, $un, $pw, $db);
+if ($conn->connect_error) die ($conn->connect_error);
+
+if (isset($_POST['delete']) && isset($_POST['id'])){
+
+    $id = get_post($conn, 'id');
+
+    $query = "DELETE FROM MYANIME WHERE id = '$id'";
+
+    $result = $conn->query($query);
+
+    if (!$result){
+        echo "UNSUCCESSFUL DELETE: $query <br />" . $conn->error . "<br /><br />";
+    }else{
+        echo "RECORD HAS BEEN DELETED";
+    }
+
+}
+
+$query = "SELECT * FROM MYANIME";
+$result = $conn->query($query);
+
+if (!$result) die ("database access failed: " . $conn->error);
+
+$rows = $result->num_rows;
+for ($j = 0 ; $j < $rows ; ++$j){
+    $result->data_seek($j);
+    $row = $result->fetch_array(MYSQLI_NUM);
+
+    echo <<<_END
+    <pre>
+        id $row[0]
+        AgeGroup $row[1]
+        Geography $row[2]
+        FavoriteCharacter $row[3]
+        Source $row[4]
+        Genre $row[5] 
+        Signup $row[6]
+    </pre>
+    <form action="nerdgawd_delete.php" method="post">
+    <input type="hidden" name="delete" value="yes">
+    <input type="hidden" name="id" value="$row[0]">
+    <input type="submit" value="DELETION"></form><br /><br />
+_END;
+}
+
+$result->close();
+
+$conn->close();
+
+function get_post($conn, $var) {
+    return $conn->real_escape_string($_POST[$var]);
+}
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+                       
+
+                </div>
+
+
+<article>
+        <section>
+        </section>
+</article>
+<footer>
+        <div class = foot>
+                <ul>
+                        <li><a href=#>Subscribe!</a></li>
+                        <li><a href="NDsurvey.html">Survey</a></li>
+                        <li><a href=#>Contact Us</a></li>
+                        <li><a href=#>About Us</a></li>
+                        <li><a href="NerdGawd.html">Home</a></li>
+                </ul>
+        </div>
+</footer>
+</div>
+</body>
+</html>
+
